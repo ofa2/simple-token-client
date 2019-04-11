@@ -1,0 +1,52 @@
+{
+  "name": "@ofa2/simple-token-client",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/ts-node --files src/index.ts",
+    "lint": "gulp eslint",
+    "lint-fix": "./node_modules/.bin/eslint src/**/*.ts --fix",
+    "watch": "gulp",
+    "build": "npm run build:dist",
+    "build:dist": "gulp build:dist",
+    "d-ts": "./node_modules/.bin/ts-node --project tsconfig.json --files config/declaration/index.ts"
+  },
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "retry": "^0.12.0",
+    "tslib": "^1.9.3"
+  },
+  "devDependencies": {
+    "@ofa2/eslint-config": "^2.0.0",
+    "@types/fs-extra": "^5.0.5",
+    "@types/node": "^11.12.2",
+    "@types/request": "^2.48.1",
+    "@types/request-promise": "^4.1.42",
+    "@types/retry": "^0.12.0",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "del": "^4.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "gulp": "4.0.0",
+    "gulp-cached": "^1.1.1",
+    "gulp-eslint": "^5.0.0",
+    "gulp-filter": "^5.1.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-remember": "^1.0.1",
+    "gulp-replace": "^1.0.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-typescript": "^5.0.0",
+    "node-notifier": "^5.3.0",
+    "nodemon": "^1.18.9",
+    "streamqueue": "^1.1.2",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.4000"
+  }
+}
