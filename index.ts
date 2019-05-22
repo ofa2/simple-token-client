@@ -1,4 +1,4 @@
 import SimpleTokenClient from './src/index';
 
-export { SimpleTokenClient };
+export * from './src/index';
 export default SimpleTokenClient;
