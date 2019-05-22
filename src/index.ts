@@ -19,11 +19,11 @@ function defer() {
   };
 }
 
-type TokenResponse =
+export type TokenResponse =
   | { accessToken: string; expiresAt: number }
   | { accessToken: string; expiresIn: number };
 
-interface ITokenConfig {
+export interface ITokenConfig {
   saveFile?: string;
   getToken?: {
     (): Promise<{ accessToken: string; tokenExpiresAt: string }>;
