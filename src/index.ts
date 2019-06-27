@@ -78,7 +78,7 @@ class SimpleTokenClient {
 
   async getToken(isForce = false) {
     if (isForce) {
-      return this.requestToken();
+      await this.requestToken();
     }
 
     let tokenInfo = await this.getTokenInfo();
