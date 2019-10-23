@@ -16,32 +16,33 @@
     "d-ts": "./node_modules/.bin/ts-node --project tsconfig.json --files config/declaration/index.ts"
   },
   "dependencies": {
-    "fs-extra": "^7.0.1",
+    "fs-extra": "^8.1.0",
     "got": "^10.0.0-alpha.1.1",
-    "tslib": "^1.9.3"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@ofa2/eslint-config": "^2.0.0",
-    "@types/fs-extra": "^5.0.5",
-    "@types/node": "^11.12.2",
-    "@typescript-eslint/eslint-plugin": "^1.5.0",
-    "del": "^4.0.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "gulp": "4.0.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/node": "^12.11.5",
+    "@typescript-eslint/eslint-plugin": "^2.5.0",
+    "@typescript-eslint/parser": "^2.5.0",
+    "del": "^5.1.0",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "gulp": "^4.0.2",
     "gulp-cached": "^1.1.1",
-    "gulp-eslint": "^5.0.0",
-    "gulp-filter": "^5.1.0",
-    "gulp-load-plugins": "^1.5.0",
+    "gulp-eslint": "^6.0.0",
+    "gulp-filter": "^6.0.0",
+    "gulp-load-plugins": "^2.0.1",
     "gulp-remember": "^1.0.1",
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-typescript": "^5.0.0",
-    "node-notifier": "^5.3.0",
-    "nodemon": "^1.18.9",
+    "node-notifier": "^6.0.0",
+    "nodemon": "^1.19.4",
     "streamqueue": "^1.1.2",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.3.4000"
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
   }
 }
