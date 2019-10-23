@@ -10,7 +10,7 @@ import { URL } from 'url';
 function defer() {
   let resolve;
   let reject;
-  let promise = new Promise((...args) => {
+  const promise = new Promise((...args) => {
     [resolve, reject] = args;
   });
 
@@ -72,7 +72,7 @@ class SimpleTokenClient {
       await this.requestToken();
     }
 
-    let tokenInfo = await this.getTokenInfo();
+    const tokenInfo = await this.getTokenInfo();
 
     if (
       !tokenInfo
@@ -86,7 +86,7 @@ class SimpleTokenClient {
   }
 
   private async requestTokenWithBlock() {
-    let deferred = defer();
+    const deferred = defer();
     if (!this.pendingRequests.length) {
       this.pendingRequests.push(deferred);
       this.requestToken();
@@ -99,7 +99,7 @@ class SimpleTokenClient {
 
   private async requestToken() {
     try {
-      let body = await this.requestTokenBuild();
+      const body = await this.requestTokenBuild();
 
       if (!body.accessToken) {
         throw new Error('no accessToken found');
@@ -145,8 +145,8 @@ class SimpleTokenClient {
       return;
     }
 
-    let dir = tmpdir();
-    let filePath = pathResolve(dir, this.config.saveFile);
+    const dir = tmpdir();
+    const filePath = pathResolve(dir, this.config.saveFile);
 
     this.config.getToken = async () => {
       if (this.accessToken && this.tokenExpiresAt) {
@@ -172,7 +172,7 @@ class SimpleTokenClient {
     if (this.config.requestOpts) {
       opts = { ...this.defaultRequestConfig, ...this.config.requestOpts };
     } else if (this.config.createRequestBody && this.config.tokenEndpoint) {
-      let body = await this.config.createRequestBody();
+      const body = await this.config.createRequestBody();
 
       opts = {
         ...this.defaultRequestConfig,
