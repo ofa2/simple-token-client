@@ -1,9 +1,11 @@
 import { readJSON, writeJSON } from 'fs-extra';
+import got from 'got';
+import {
+  CancelableRequest, Options, Response, URLArgument
+} from 'got/dist/utils/types';
 import { tmpdir } from 'os';
 import { resolve as pathResolve } from 'path';
-import rp, { Options } from 'request-promise';
-import retry from 'retry';
-import { Url } from 'url';
+import { URL } from 'url';
 
 function defer() {
   let resolve;
@@ -32,20 +34,13 @@ export interface ITokenConfig {
     ({ accessToken, tokenExpiresAt }: { accessToken: string; tokenExpiresAt: Date }): void;
   };
   transformBody?: {
-    (body?: object): TokenResponse | Promise<TokenResponse>;
+    (response?: CancelableRequest<Response>): Promise<TokenResponse>;
   };
   requestOpts?: Options;
   createRequestBody?: {
     (): object | Promise<TokenResponse>;
   };
-  tokenEndpoint?: string | Url;
-  tokenRetryOptions?: {
-    retries?: number;
-    factor?: number;
-    minTimeout?: number;
-    maxTimeout?: number;
-    randomize?: boolean;
-  };
+  tokenEndpoint?: string | URL;
 }
 
 class SimpleTokenClient {
@@ -57,19 +52,15 @@ class SimpleTokenClient {
 
   private pendingRequests: any[] = [];
 
-  private defaultConfig = {
-    tokenRetryOptions: {
-      retries: 5,
-      factor: 3,
-      minTimeout: 1000,
-      maxTimeout: 60 * 1000,
-      randomize: true,
+  private defaultRequestConfig = {
+    responseType: 'json' as 'json',
+    retry: {
+      limit: 2,
     },
   };
 
   constructor(config: ITokenConfig) {
     this.config = {
-      ...this.defaultConfig,
       ...config,
     };
 
@@ -108,11 +99,7 @@ class SimpleTokenClient {
 
   private async requestToken() {
     try {
-      let body = await this.requestTokenWithRetry();
-
-      if (this.config.transformBody) {
-        body = await this.config.transformBody(body);
-      }
+      let body = await this.requestTokenBuild();
 
       if (!body.accessToken) {
         throw new Error('no accessToken found');
@@ -162,6 +149,10 @@ class SimpleTokenClient {
     let filePath = pathResolve(dir, this.config.saveFile);
 
     this.config.getToken = async () => {
+      if (this.accessToken && this.tokenExpiresAt) {
+        return { accessToken: this.accessToken, tokenExpiresAt: this.tokenExpiresAt };
+      }
+
       return readJSON(filePath).catch(() => {
         return { accessToken: '', tokenExpiresAt: new Date(0) };
       });
@@ -179,43 +170,29 @@ class SimpleTokenClient {
 
     let opts: Options;
     if (this.config.requestOpts) {
-      opts = this.config.requestOpts;
+      opts = { ...this.defaultRequestConfig, ...this.config.requestOpts };
     } else if (this.config.createRequestBody && this.config.tokenEndpoint) {
       let body = await this.config.createRequestBody();
 
       opts = {
+        ...this.defaultRequestConfig,
         url: this.config.tokenEndpoint,
         method: 'POST',
-        proxy: false,
-        json: true,
         followRedirect: false,
-        body,
+        json: body,
       };
     } else {
       throw new Error('no requestOpts and no (createRequestBody & tokenEndpoint)');
     }
 
-    return rp(opts);
-  }
+    const request = got(opts as Options & { url: URLArgument; stream: false });
 
-  private async requestTokenWithRetry() {
-    let operation = retry.operation(this.config.tokenRetryOptions);
+    if (this.config.transformBody) {
+      return this.config.transformBody(request);
+    }
 
-    return new Promise<TokenResponse>((resolve, reject) => {
-      operation.attempt(() => {
-        return this.requestTokenBuild()
-          .then((body) => {
-            resolve(body);
-          })
-          .catch((e) => {
-            if (operation.retry(e)) {
-              return null;
-            }
-
-            return reject(operation.mainError());
-          });
-      });
-    });
+    const response = await request;
+    return response.body;
   }
 
   private async getTokenInfo() {

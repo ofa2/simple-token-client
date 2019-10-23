@@ -17,18 +17,13 @@
   },
   "dependencies": {
     "fs-extra": "^7.0.1",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4",
-    "retry": "^0.12.0",
+    "got": "^10.0.0-alpha.1.1",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@ofa2/eslint-config": "^2.0.0",
     "@types/fs-extra": "^5.0.5",
     "@types/node": "^11.12.2",
-    "@types/request": "^2.48.1",
-    "@types/request-promise": "^4.1.42",
-    "@types/retry": "^0.12.0",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "del": "^4.0.0",
     "eslint": "^5.16.0",
